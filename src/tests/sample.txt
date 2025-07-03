@@ -1,0 +1,9 @@
+Agent: Thank you for calling Tech Support, my name is Brenda. How can I help you today?
+Caller: Hi Brenda. I'm having a really frustrating issue. My internet connection has been incredibly slow for the past three hours. I can barely load a webpage.
+Agent: I'm sorry to hear that. I can definitely look into your network status. Can you please provide your account number?
+Caller: Yes, it's 123-456-789.
+Agent: Thank you. I'm pulling up your account... I see some reported slowness in your area, and we're working on it. I expect it to be resolved within the next hour.
+Caller: Okay, thanks for the update. While I have you on the line, I also wanted to ask about my last bill. It seems much higher than usual. I don't understand the new data usage charges.
+Agent: Of course. I can transfer you to our billing department to discuss the cost inquiry, or I can pull up the details for you here if you'd like.
+Caller: Just transfer me, that's fine.
+Agent: Understood. One moment please.

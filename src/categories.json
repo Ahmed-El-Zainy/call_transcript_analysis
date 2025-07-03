@@ -1,0 +1,58 @@
+[
+    {
+      "value": "Network Issue",
+      "description": "The caller is facing network issues",
+      "subcategories": [
+        {
+          "value": "Slow Connection",
+          "description": "The caller reported slow connection"
+        },
+        {
+          "value": "Network Down",
+          "description": "The caller reported their network is down"
+        },
+        {
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "value": "Billing",
+      "description": "The caller made billing inquiries",
+      "subcategories": [
+        {
+          "value": "Payment not processed",
+          "description": "The caller reported an error while paying for a service"
+        },
+        {
+          "value": "Cost Inquiry",
+          "description": "The caller is inquiring about costs for a particular service",
+          "subcategories": [
+            {
+              "value": "DSL"
+            },
+            {
+              "value": "5G"
+            },
+            {
+              "value": "Fiber"
+            }
+          ]
+        },
+        {
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "value": "Account Management",
+      "subcategories": [
+        {
+          "value": "Update Personal Info"
+        },
+        {
+          "value": "Password Reset"
+        }
+      ]
+    }
+  ]
