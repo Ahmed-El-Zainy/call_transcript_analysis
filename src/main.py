@@ -183,6 +183,14 @@ class TranscriptAnalyzer:
                 raise ValueError("Gemini API key not found in config or environment")
             return GeminiProvider(api_key, model)
         
+        elif provider_name == "grok":
+            config = providers_config.get("gemini", {})
+            api_key = config.get("api_key") or os.getenv("GROK_API_KEY")
+            model = config.get("model", "grok-3")
+            if not api_key:
+                raise ValueError("Grok API key not found in config or environment")
+            return GeminiProvider(api_key, model)
+        
         elif provider_name == "deepseek":
             config = providers_config.get("deepseek", {})
             api_key = config.get("api_key") or os.getenv("DEEPSEEK_API_KEY")

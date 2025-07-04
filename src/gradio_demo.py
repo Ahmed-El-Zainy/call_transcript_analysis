@@ -155,6 +155,30 @@ class OpenAIProvider(LLMProvider):
             raise Exception(f"OpenAI API error: {str(e)}")
 
 
+class GrokProvider(LLMProvider):
+    """Grok (X.AI) API provider"""
+    
+    def __init__(self, api_key: str, model: str = "grok-beta"):
+        if not OPENAI_AVAILABLE:
+            raise ImportError("openai package not installed for Grok")
+        self.client = openai.OpenAI(
+            api_key=api_key,
+            base_url="https://api.x.ai/v1"
+        )
+        self.model = model
+    
+    def generate_response(self, prompt: str) -> str:
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.1
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            raise Exception(f"Grok API error: {str(e)}")
+
+
 class TranscriptAnalyzer:
     """Main class for analyzing call transcripts"""
     
@@ -291,10 +315,10 @@ Analyze the transcript now:
             # Parse response
             result = self.parse_llm_response(response)
             
-            return json.dumps(result.__dict__, indent=2), ""
+            return result.__dict__, ""
         
         except Exception as e:
-            return "", f"Error during analysis: {str(e)}"
+            return {"analysis_results": []}, f"Error during analysis: {str(e)}"
 
 
 # Default categories for demo
@@ -361,7 +385,7 @@ def get_available_providers():
         providers.append("HuggingFace")
     
     if OPENAI_AVAILABLE:
-        providers.extend(["OpenAI", "Qwen"])
+        providers.extend(["OpenAI", "Grok", "Qwen"])
     
     return providers
 
@@ -371,7 +395,8 @@ def get_models_for_provider(provider):
         "Gemini": ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"],
         "DeepSeek": ["deepseek-chat", "deepseek-coder"],
         "HuggingFace": ["microsoft/DialoGPT-large", "gpt2", "microsoft/DialoGPT-medium"],
-        "OpenAI": ["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo"],
+        "OpenAI": ["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo", "gpt-4o"],
+        "Grok": ["grok-3", "grok-1", "grok-2", "grok-3-mini"],
         "Qwen": ["qwen-turbo", "qwen-plus", "qwen-max"]
     }
     return models.get(provider, [])
@@ -383,13 +408,25 @@ def update_model_choices(provider):
 
 def update_api_key_visibility(provider):
     """Show/hide API key input based on provider"""
-    needs_api_key = provider in ["Gemini", "DeepSeek", "OpenAI", "Qwen"]
-    return gr.Textbox(visible=needs_api_key, interactive=needs_api_key)
+    needs_api_key = provider in ["Gemini", "DeepSeek", "OpenAI", "Grok", "Qwen"]
+    return gr.Textbox(
+        label="API Key",
+        placeholder="Enter your API key..." if needs_api_key else "No API key required",
+        type="password" if needs_api_key else "text",
+        visible=True,
+        interactive=needs_api_key
+    )
 
 def analyze_transcript_gradio(transcript, categories_json, provider, api_key, model):
     """Gradio interface function for transcript analysis"""
     if not transcript.strip():
-        return "", "Please enter a transcript to analyze."
+        return None, "Please enter a transcript to analyze."
+    
+    if not provider:
+        return None, "Please select an LLM provider."
+    
+    if not model:
+        return None, "Please select a model."
     
     try:
         # Parse categories
@@ -405,14 +442,14 @@ def analyze_transcript_gradio(transcript, categories_json, provider, api_key, mo
         result, error = analyzer.analyze_transcript(transcript, categories, provider, api_key, model)
         
         if error:
-            return "", error
+            return None, error
         else:
-            return result, ""
+            return result, "Analysis completed successfully!"
     
     except json.JSONDecodeError:
-        return "", "Invalid JSON format in categories. Please check your JSON syntax."
+        return None, "Invalid JSON format in categories. Please check your JSON syntax."
     except Exception as e:
-        return "", f"Unexpected error: {str(e)}"
+        return None, f"Unexpected error: {str(e)}"
 
 # Create Gradio interface
 def create_gradio_app():
@@ -470,8 +507,8 @@ def create_gradio_app():
             with gr.Row():
                 with gr.Column():
                     gr.Markdown("### 📈 Results")
-                    result_output = gr.JSON(label="Analysis Results")
-                    error_output = gr.Textbox(label="Errors", visible=False)
+                    result_output = gr.JSON(label="Analysis Results", show_label=True)
+                    error_output = gr.Textbox(label="Status/Errors", lines=3, show_label=True)
         
         with gr.Tab("📚 Help & Examples"):
             gr.Markdown("""
@@ -510,6 +547,7 @@ def create_gradio_app():
             - **Gemini**: Google's AI model (requires API key)
             - **DeepSeek**: DeepSeek's AI model (requires API key)
             - **OpenAI**: GPT models (requires API key)
+            - **Grok**: X.AI's Grok model (requires API key)
             - **Qwen**: Alibaba's AI model (requires API key)
             - **HuggingFace**: Open-source models (no API key required)
             
@@ -517,6 +555,7 @@ def create_gradio_app():
             - **Gemini**: Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
             - **DeepSeek**: Visit [DeepSeek Platform](https://platform.deepseek.com/)
             - **OpenAI**: Visit [OpenAI Platform](https://platform.openai.com/api-keys)
+            - **Grok**: Visit [X.AI Console](https://console.x.ai/) - Get your API key from X.AI
             - **Qwen**: Visit [Dashscope](https://dashscope.aliyuncs.com/)
             """)
         

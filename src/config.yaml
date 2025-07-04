@@ -5,9 +5,9 @@ llm_provider: gemini
 # Provider-specific configurations
 providers:
   # Google Gemini Configuration
-  gemini:
-    api_key: "AIzaSyDxuh2N0WbNHlui66ZftNPBH9G3n1vqZ00"
-    model: "gemini-2.0-flash"
+  # gemini:
+    # api_key: "AIzaSyDxuh2N0WbNHlui66ZftNPBH9G3n1vqZ00"
+    # model: "gemini-2.0-flash"
     # Alternative models: "gemini-1.5-pro", "gemini-1.5-flash"
   
   # DeepSeek Configuration
@@ -15,7 +15,11 @@ providers:
     api_key: "sk-a58dd7f5d004490986ec32c78796421b"
     model: "deepseek-ai/DeepSeek-V2.5-1210"
     # Alternative models: "deepseek-coder"
-  
+  grok:
+    api_key: "xai-54nmQnISka4zMxwcnG4f00MQVKvIvA5cV0mpaidKj1BGWairqh7NoKTwDgGU0VtrDH9KDop0gmgCByuw"
+    model: "grok-3"
+    # Alternative models: "grok-1"
+
   # Hugging Face Configuration (runs locally)
   huggingface:
     model: "microsoft/DialoGPT-large"
