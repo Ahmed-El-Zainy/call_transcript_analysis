@@ -29,6 +29,7 @@ providers:
     # - "gpt2"
     # - "EleutherAI/gpt-neo-2.7B"
     # - "microsoft/phi-2"
+    token: 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
   
   # Qwen Configuration (Alibaba Cloud)
   qwen:
