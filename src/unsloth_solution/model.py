@@ -6,11 +6,6 @@ with open('config_unsloth.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
 
-
-
-
-
-
 def init_model():
     model, tokenizer = FastModel.from_pretrained(
         model_name =config["model"]["model_name"],
