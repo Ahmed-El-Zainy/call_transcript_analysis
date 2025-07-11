@@ -8,6 +8,7 @@ __pycache__/
 results.json
 output/
 logs/
+config.yaml
 # Distribution / packaging
 .Python
 build/
