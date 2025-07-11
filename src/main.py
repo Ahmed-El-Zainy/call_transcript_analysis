@@ -391,9 +391,9 @@ def main():
     analyzer = TranscriptAnalyzer()
     
     # Part 1: Single category with hardcoded categories
-    print("=== Part 1: Single Category Classification ===")
-    result_part1 = analyzer.analyze_with_hardcoded_categories("src/tests/transcript.txt")
-    print(json.dumps(result_part1.__dict__, indent=2))
+    # print("=== Part 1: Single Category Classification ===")
+    # result_part1 = analyzer.analyze_with_hardcoded_categories("src/tests/transcript.txt")
+    # print(json.dumps(result_part1.__dict__, indent=2))
     
     # Part 2 & 3: Multi-issue extraction with dynamic categories
     print("\n=== Part 2 & 3: Multi-Issue Extraction with Dynamic Categories ===")
