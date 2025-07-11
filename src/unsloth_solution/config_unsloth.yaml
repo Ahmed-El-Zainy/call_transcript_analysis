@@ -1,0 +1,44 @@
+model:
+  model_name: "unsloth/gemma-3n-E4B-it" 
+  dtype: None
+  max_seq_length: 1024
+  load_in_4bit: True
+  full_finetuning: False
+  token: "hf_..."
+
+differnet_fourbit_models:
+[
+    "unsloth/Llama-3.2-11B-Vision-Instruct-bnb-4bit", # Llama 3.2 vision support
+    "unsloth/Llama-3.2-11B-Vision-bnb-4bit",
+    "unsloth/Llama-3.2-90B-Vision-Instruct-bnb-4bit", # Can fit in a 80GB card!
+    "unsloth/Llama-3.2-90B-Vision-bnb-4bit",
+
+    "unsloth/Pixtral-12B-2409-bnb-4bit",              # Pixtral fits in 16GB!
+    "unsloth/Pixtral-12B-Base-2409-bnb-4bit",         # Pixtral base model
+
+    "unsloth/Qwen2-VL-2B-Instruct-bnb-4bit",          # Qwen2 VL support
+    "unsloth/Qwen2-VL-7B-Instruct-bnb-4bit",
+    "unsloth/Qwen2-VL-72B-Instruct-bnb-4bit",
+
+    "unsloth/llava-v1.6-mistral-7b-hf-bnb-4bit",      # Any Llava variant works!
+    "unsloth/llava-1.5-7b-hf-bnb-4bit",
+] 
+
+
+gemma_3n_models:
+[
+    # 4bit dynamic quants for superior accuracy and low memory use
+    "unsloth/gemma-3n-E4B-it-unsloth-bnb-4bit",
+    "unsloth/gemma-3n-E2B-it-unsloth-bnb-4bit",
+    # Pretrained models
+    "unsloth/gemma-3n-E4B-unsloth-bnb-4bit",
+    "unsloth/gemma-3n-E2B-unsloth-bnb-4bit",
+
+    # Other Gemma 3 quants
+    "unsloth/gemma-3-1b-it-unsloth-bnb-4bit",
+    "unsloth/gemma-3-4b-it-unsloth-bnb-4bit",
+    "unsloth/gemma-3-12b-it-unsloth-bnb-4bit",
+    "unsloth/gemma-3-27b-it-unsloth-bnb-4bit",
+] 
+
+
