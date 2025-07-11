@@ -21,7 +21,7 @@ An AI-powered tool that analyzes customer support call transcripts and automatic
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Ahmed-El-Zainy/call_transcript_analysis.git
    cd call-transcript-analysis
    ```
 
