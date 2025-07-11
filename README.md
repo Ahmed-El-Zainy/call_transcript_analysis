@@ -30,6 +30,338 @@ An AI-powered tool that analyzes customer support call transcripts and automatic
    pip install -r requirements.txt
    ```
 
+## For part of Not using Models and just want to use Pre-Trained Models like: 
+``` "unsloth/Llama-3.2-11B-Vision-Instruct-bnb-4bit", # Llama 3.2 vision support
+    "unsloth/Llama-3.2-11B-Vision-bnb-4bit",
+    "unsloth/Llama-3.2-90B-Vision-Instruct-bnb-4bit", # Can fit in a 80GB card!
+    "unsloth/Llama-3.2-90B-Vision-bnb-4bit",
+    "unsloth/Pixtral-12B-2409-bnb-4bit",              # Pixtral fits in 16GB!
+    "unsloth/Pixtral-12B-Base-2409-bnb-4bit",         # Pixtral base model
+    "unsloth/Qwen2-VL-2B-Instruct-bnb-4bit",          # Qwen2 VL support
+    "unsloth/Qwen2-VL-7B-Instruct-bnb-4bit",
+    "unsloth/Qwen2-VL-72B-Instruct-bnb-4bit",
+    "unsloth/llava-v1.6-mistral-7b-hf-bnb-4bit",      # Any Llava variant works!
+    "unsloth/llava-1.5-7b-hf-bnb-4bit",
+
+```
+
+
+I used model of 
+``` unsloth/gemma-3n-E4B-it ```
+and it is Result are 
+```
+EXAMPLE 1: Default transcript analysis
+============================================================
+MANUAL ANALYSIS:
+============================================================
+CALL CENTER ANALYSIS REPORT
+============================================================
+
+CALL SUMMARY:
+Agent: Brenda
+Account: 123-456-789
+Total Issues: 2
+Status: In Progress - Network issue being resolved, billing transferred to billing department
+
+IDENTIFIED ISSUES:
+----------------------------------------
+
+Issue #1:
+  Category: Network Issue
+  Subcategory: Slow Connection
+  Severity: High
+  Description: Internet connection has been incredibly slow for the past three hours, can barely load a webpage
+  Quote: "My internet connection has been incredibly slow for the past three hours. I can barely load a webpage."
+
+Issue #2:
+  Category: Billing
+  Subcategory: Cost Inquiry
+  Sub-subcategory: Data Usage
+  Severity: Medium
+  Description: Last bill seems much higher than usual, confusion about new data usage charges
+  Quote: "I also wanted to ask about my last bill. It seems much higher than usual. I don't understand the new data usage charges."
+
+RAW CALLER STATEMENTS:
+----------------------------------------
+1. Hi Brenda. I'm having a really frustrating issue. My internet connection has been incredibly slow for the past three hours. I can barely load a webpage.
+2. Yes, it's 123-456-789.
+3. Okay, thanks for the update. While I have you on the line, I also wanted to ask about my last bill. It seems much higher than usual. I don't understand the new data usage charges.
+4. Just transfer me, that's fine.
+
+================================================================================
+RUNNING MODEL INFERENCE...
+================================================================================
+Here's a breakdown of the issues discussed in the transcript, categorized according to the provided structure:
+
+1.  **Network Issue**
+    *   **Subcategory:** Slow Connection
+    *   **Sub-subcategory:** *None*
+    *   **Description:** Slow internet connection experienced by the caller.
+    *   **Quote:** "My internet connection has been incredibly slow for the past three hours. I can barely load a webpage."
+
+2.  **Billing**
+    *   **Subcategory:** Cost Inquiry
+    *   **Sub-subcategory:** Data Usage
+    *   **Description:** Caller questioning a higher-than-usual bill related to data usage charges.
+    *   **Quote:** "I also wanted to ask about my last bill. It seems much higher than usual. I don't understand the new data usage charges."
+
+<end_of_turn>
+
+====================================================================================================
+EXAMPLE 2: Running full test suite
+============================================================
+RUNNING TEST SUITE
+============================================================
+
+TEST CASE 1: Multi-issue Call
+--------------------------------------------------
+Issues Found: 2
+  Issue 1: Network Issue -> Slow Connection
+  Issue 2: Billing -> Cost Inquiry
+    Sub-category: Data Usage
+
+TEST CASE 2: Billing Dispute
+--------------------------------------------------
+Issues Found: 2
+  Issue 1: Network Issue -> Slow Connection
+  Issue 2: Billing -> Cost Inquiry
+    Sub-category: Data Usage
+
+TEST CASE 3: Account Security
+--------------------------------------------------
+Issues Found: 2
+  Issue 1: Network Issue -> Slow Connection
+  Issue 2: Billing -> Cost Inquiry
+    Sub-category: Data Usage
+
+TEST SUITE COMPLETED
+============================================================
+
+====================================================================================================
+EXAMPLE 3: Using ModelTestRunner
+============================================================
+AVAILABLE TEST CASES:
+------------------------------
+  network_down: Network Issue -> Network Down
+  billing_payment: Billing -> Payment not processed
+  account_update: Account Management -> Update Personal Info
+  password_reset: Account Management -> Password Reset
+  service_inquiry: Billing -> Cost Inquiry -> Fiber
+
+
+Running single test: 'network_down'
+----------------------------------------
+Running test: network_down
+----------------------------------------
+Expected: Network Issue -> Network Down
+Found 2 issues:
+  Issue 1: Network Issue -> Slow Connection
+  Issue 2: Billing -> Cost Inquiry -> Data Usage
+
+Running model inference...
+Here's an analysis of the call transcript, identifying the issues and categorizing them according to the provided structure:
+
+1.  **Network Down** (Network Issue / Network Down / Other) - The caller's internet connection is completely down.
+    *   Quote: "My internet is completely down. I can't connect to anything."
+
+2.  **Work Disruption/Financial Impact** (Network Issue / Other / Other) - The internet outage is causing financial hardship due to the inability to work from home.
+    *   Quote: "This is costing me money since I work from home!"
+
+<end_of_turn>
+Model result: None
+
+Running custom transcript test
+----------------------------------------
+RUNNING CUSTOM TEST
+----------------------------------------
+Found 2 issues:
+  Issue 1: Network Issue -> Slow Connection
+    Description: Internet connection has been incredibly slow for the past three hours, can barely load a webpage
+  Issue 2: Billing -> Cost Inquiry -> Data Usage
+    Description: Last bill seems much higher than usual, confusion about new data usage charges
+
+Running model inference...
+Here's an analysis of the call transcript, identifying the issues and categorizing them according to the provided structure:
+
+1.  **Category:** Billing
+    **Subcategory:** Refund
+    **Sub-subcategory:** Other
+    **Description:** Caller requests a refund for the current month.
+    **Quote:** "I also need a refund for this month."
+
+2.  **Category:** Account Management
+    **Subcategory:** Cancel Service
+    **Sub-subcategory:** Other
+    **Description:** Caller requests immediate cancellation of service.
+    **Quote:** "I need to cancel my service immediately."
+
+3.  **Category:** Network Issue
+    **Subcategory:** Other
+    **Sub-subcategory:** Other
+    **Description:** Caller expresses dissatisfaction with customer service.
+    **Quote:** "Your company has the worst customer service ever!"
+<end_of_turn>
+Model result: None
+```
+
+and then Use model of 
+``` unsloth/Qwen2.5-VL-7B-Instruct-bnb-4bit ```
+and Results Are 
+```
+EXAMPLE 1: Default transcript analysis
+============================================================
+MANUAL ANALYSIS:
+============================================================
+CALL CENTER ANALYSIS REPORT
+============================================================
+
+CALL SUMMARY:
+Agent: Brenda
+Account: 123-456-789
+Total Issues: 2
+Status: In Progress - Network issue being resolved, billing transferred to billing department
+
+IDENTIFIED ISSUES:
+----------------------------------------
+
+Issue #1:
+  Category: Network Issue
+  Subcategory: Slow Connection
+  Severity: High
+  Description: Internet connection has been incredibly slow for the past three hours, can barely load a webpage
+  Quote: "My internet connection has been incredibly slow for the past three hours. I can barely load a webpage."
+
+Issue #2:
+  Category: Billing
+  Subcategory: Cost Inquiry
+  Sub-subcategory: Data Usage
+  Severity: Medium
+  Description: Last bill seems much higher than usual, confusion about new data usage charges
+  Quote: "I also wanted to ask about my last bill. It seems much higher than usual. I don't understand the new data usage charges."
+
+RAW CALLER STATEMENTS:
+----------------------------------------
+1. Hi Brenda. I'm having a really frustrating issue. My internet connection has been incredibly slow for the past three hours. I can barely load a webpage.
+2. Yes, it's 123-456-789.
+3. Okay, thanks for the update. While I have you on the line, I also wanted to ask about my last bill. It seems much higher than usual. I don't understand the new data usage charges.
+4. Just transfer me, that's fine.
+
+================================================================================
+RUNNING MODEL INFERENCE...
+================================================================================
+Here are the identified issues categorized based on the provided structure:
+
+1. **Network Issue** > **Slow Connection**
+   - **Description**: The caller is experiencing a slow internet connection.
+   - **Quote**: "My internet connection has been incredibly slow for the past three hours. I can barely load a webpage."
+
+2. **Billing** > **Cost Inquiry**
+   - **Description**: The caller is inquiring about high and unusual data usage charges in their latest bill.
+   - **Quote**: "It seems much higher than usual. I don't understand the new data usage charges."
+
+To summarize the identified issues and their categories:
+
+1. Network Issue > Slow Connection > Caller reported slow connection.
+2. Billing > Cost Inquiry > Caller is inquiring about high data usage charges.<|im_end|>
+
+====================================================================================================
+EXAMPLE 2: Running full test suite
+============================================================
+RUNNING TEST SUITE
+============================================================
+
+TEST CASE 1: Multi-issue Call
+--------------------------------------------------
+Issues Found: 2
+  Issue 1: Network Issue -> Slow Connection
+  Issue 2: Billing -> Cost Inquiry
+    Sub-category: Data Usage
+
+TEST CASE 2: Billing Dispute
+--------------------------------------------------
+Issues Found: 2
+  Issue 1: Network Issue -> Slow Connection
+  Issue 2: Billing -> Cost Inquiry
+    Sub-category: Data Usage
+
+TEST CASE 3: Account Security
+--------------------------------------------------
+Issues Found: 2
+  Issue 1: Network Issue -> Slow Connection
+  Issue 2: Billing -> Cost Inquiry
+    Sub-category: Data Usage
+
+TEST SUITE COMPLETED
+============================================================
+
+====================================================================================================
+EXAMPLE 3: Using ModelTestRunner
+============================================================
+AVAILABLE TEST CASES:
+------------------------------
+  network_down: Network Issue -> Network Down
+  billing_payment: Billing -> Payment not processed
+  account_update: Account Management -> Update Personal Info
+  password_reset: Account Management -> Password Reset
+  service_inquiry: Billing -> Cost Inquiry -> Fiber
+
+
+Running single test: 'network_down'
+----------------------------------------
+Running test: network_down
+----------------------------------------
+Expected: Network Issue -> Network Down
+Found 2 issues:
+  Issue 1: Network Issue -> Slow Connection
+  Issue 2: Billing -> Cost Inquiry -> Data Usage
+
+Running model inference...
+1. **Category: Network Issue**
+   - **Subcategory: Network Down**
+   - **Description:** The caller’s internet connection has completely disappeared.
+   - **Quote:** "My internet is completely down. I can't connect to anything."
+
+2. **Category: Billing**
+   - **Subcategory: Cost Inquiry**
+   - **Sub-subcategory: Data Usage**
+   - **Description:** The caller is concerned about costs due to a lack of internet functionality, suggesting that missing data usage.
+   - **Quote:** "This is costing me money since I work from home!"
+
+Here are all the identified issues with their corresponding categories and descriptions based on the provided transcript.<|im_end|>
+Model result: None
+
+Running custom transcript test
+----------------------------------------
+RUNNING CUSTOM TEST
+----------------------------------------
+Found 2 issues:
+  Issue 1: Network Issue -> Slow Connection
+    Description: Internet connection has been incredibly slow for the past three hours, can barely load a webpage
+  Issue 2: Billing -> Cost Inquiry -> Data Usage
+    Description: Last bill seems much higher than usual, confusion about new data usage charges
+
+Running model inference...
+Based on the transcript provided, here are the identified issues along with their full category paths:
+
+1. **Category:** Billing  
+   **Subcategory:** Cost Inquiry  
+   **Sub-subcategory:** Data Usage  
+   **Description:** The caller is seeking a refund for this month's service payment.  
+   **Quote:** "I also need a refund for this month."
+
+2. **Category:** Account Management  
+   **Subcategory:** Update Personal Info  
+   **Description:** The caller wants to cancel the service, which implies they need to update personal information related to the account cancellation.  
+   **Quote:** "I need to cancel my service immediately."
+
+3. **Category:** Account Management  
+   **Subcategory:** Password Reset  
+   **Description:** Although the caller explicitly mentions needing to cancel the service, the urgency and frustration expressed suggest they might also be seeking password reset assistance, which often accompanies account management tasks.  
+   **Quote:** "Your company has the worst customer service ever!"  
+
+Note: The last two points aim to capture the essence of the conversation's urgency surrounding account management actions, despite it not fitting precisely into defined categories.<|im_end|>
+Model result: None
+```
 3. **Set up environment variables**
    
    Create a `.env` file in the project root:
@@ -46,6 +378,10 @@ An AI-powered tool that analyzes customer support call transcripts and automatic
    export GEMINI_API_KEY="your_gemini_api_key_here"
    export HF_TOKEN="your_huggingface_token_here"
    ```
+
+
+
+These is anther Approach but the unsloth approach is the best 
 
 ### Basic Usage
 
